@@ -15,40 +15,22 @@ java {
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
-}
-
-ext {
-	set('springAiVersion', "1.0.0-M6")
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	// abstracción de OpenAI - Spring AI - Gemini
-	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
-
-	// PDF/Word
+	// Exportación de Documentos
 	implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
 	implementation 'org.docx4j:docx4j-ImportXHTML:11.4.8'
 	implementation 'org.docx4j:docx4j-JAXB-ReferenceImpl:11.4.8'
 
-	// .env
+	// Carga de variables .env
 	implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testCompileOnly 'org.projectlombok:lombok'
-	testAnnotationProcessor 'org.projectlombok:lombok'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
-	}
 }
 
 tasks.named('test') {

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/v1/document")
 @RequiredArgsConstructor
+@CrossOrigin(value = "*")
 public class DocumentController {
     private final DocumentAiService documentAiService;
 
