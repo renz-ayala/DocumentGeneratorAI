@@ -18,7 +18,7 @@ public class DocumentController {
     private final DocumentAiService documentAiService;
 
     @PostMapping("/preview")
-    public ResponseEntity<DocumentResponse> preview(@RequestParam("file")MultipartFile file) {
+    public ResponseEntity<DocumentResponse> preview(@RequestParam("file") MultipartFile file) {
         var response = documentAiService.mapToHtml(file);
         return ResponseEntity.ok(response);
     }

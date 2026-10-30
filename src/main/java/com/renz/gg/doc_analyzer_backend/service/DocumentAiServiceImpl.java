@@ -33,16 +33,16 @@ public class DocumentAiServiceImpl implements DocumentAiService {
             String mimeType = (file.getContentType() != null) ? file.getContentType() : "image/jpeg";
 
             String prompt = """
-                Eres un experto en maquetación web y OCR visual.
-                Analiza la imagen adjunta y replica el documento exacto en código HTML5 con CSS inline simple.
+            Eres un experto en maquetación web y OCR visual.
+            Analiza la imagen adjunta y replica el documento exacto en código HTML5 con CSS inline simple.
 
-                Reglas estrictas:
-                1. Respeta el orden de los párrafos, títulos, listas y tablas.
-                2. Si hay tablas, usa <table> con bordes inline (border: 1px solid #ccc; border-collapse: collapse;).
-                3. Mantén alineaciones de texto y estilos.
-                4. Devuelve XHTML válido wrapped en <!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body>...</body></html>.
-                5. Responde ÚNICAMENTE en formato JSON válido con las claves "documentTitle" y "htmlContent".
-                """;
+            Reglas estrictas:
+            1. Respeta el orden de los párrafos, títulos, listas y tablas.
+            2. Si hay tablas, usa <table> con bordes inline (border: 1px solid #ccc; border-collapse: collapse;).
+            3. Mantén alineaciones de texto y estilos.
+            4. Devuelve XHTML válido wrapped en <!DOCTYPE html><html><head><meta charset="UTF-8"/></head><body>...</body></html>.
+            5. Responde ÚNICAMENTE en formato JSON válido con las claves "documentTitle" y "htmlContent".
+            """;
 
             Map<String, Object> requestBody = Map.of(
                     "contents", List.of(
@@ -77,9 +77,14 @@ public class DocumentAiServiceImpl implements DocumentAiService {
             }
 
             return objectMapper.readValue(jsonText, DocumentResponse.class);
-
+        } catch (org.springframework.web.client.HttpServerErrorException.ServiceUnavailable e) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE,
+                    "La IA de Gemini está experimentando alta demanda (503). Inténtalo de nuevo en unos segundos.",
+                    e
+            );
         } catch (Exception e) {
-            throw new RuntimeException("Error procesando imagen con Gemini: " + e.getMessage(), e);
+            throw new RuntimeException("Error procesando la imagen con Gemini: " + e.getMessage(), e);
         }
     }
 }
